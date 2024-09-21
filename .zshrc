@@ -1,36 +1,11 @@
-#Know the linux distro
-distro=$(lsb_release -si)
-if [ "$distro" = "Solus" ]; then
-    PaqueteTMux=$(eopkg bl tmux)
-    PaqueteVIM=$(eopkg bl vim)
-    PaqueteNVIM=$(eopkg bl neovim)
-    alias instala="sudo eopkg it -y"
-    alias informa="sudo eopkg bl"
-elif [ "$distro" = "Ubuntu" ]; then
-    PaqueteTMux=$(dpkg --get-selections | grep -w tmux | grep -w install)
-    PaqueteVIM=$(dpkg --get-selections | grep -w vim | grep -w install)
-    PaqueteNVIM=$(dpkg --get-selections | grep -w nvim | grep -w install)
-    alias instala="sudo apt-fast install -y"
-    alias informa="sudo apt install"
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-if [ "$distro" != "" ]; then
-    # Init TMux
-    if [ "$PaqueteTMux" != "" ]; then
-        tmux
-    fi
 
-    # Preferred editor for local and remote sessions
-    # Change MVIM for VIM
-    if [ "$PaqueteVIM" != "" ]; then
-        export EDITOR="vim"
-    elif [ "$PaqueteNVIM" != "" ]; then
-        export EDITOR="nvim"
-        alias vim="nvim"
-        alias vi="nvim"
-    else
-        export EDITOR="nano"
-    fi
-fi
+export EDITOR="nvim"
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -84,7 +59,37 @@ HIST_STAMPS="dd.mm.yyyy"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(bundler git rails npm pip python sudo sublime web-search git-extras vagrant wd colorize colored-man-pages command-not-found cp rsync taskwarrior redis-cli systemd)
+plugins=(
+  bundler
+  asdf
+  git
+  rails
+  npm
+  pip
+  python
+  sudo
+  web-search
+  git-extras
+  vagrant
+  wd
+  colorize
+  colored-man-pages
+  command-not-found
+  cp
+  rsync
+  taskwarrior
+  redis-cli
+  systemd
+  docker
+  docker-compose
+  gh
+  golang
+  mix
+  postgres
+  rust
+  tmux
+  extract
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -122,10 +127,24 @@ antigen bundle lukechilds/zsh-nvm
 antigen bundle hlissner/zsh-autopair
 
 # Load the theme
-antigen theme https://github.com/caiogondim/bullet-train-oh-my-zsh-theme bullet-train
+# antigen theme https://github.com/caiogondim/bullet-train-oh-my-zsh-theme bullet-train
+antigen theme romkatv/powerlevel10k
+# antigen theme nebirhos
 
 # Tell antigen that you're done
 antigen apply
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
+. /opt/asdf-vm/asdf.sh
+autoload -Uz compinit
+compinit
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# pnpm
+export PNPM_HOME="/home/dani/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
