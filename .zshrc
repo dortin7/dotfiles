@@ -5,7 +5,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-export EDITOR="nvim"
+export EDITOR="vim"
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -50,7 +50,7 @@ COMPLETION_WAITING_DOTS="true"
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
 # The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-HIST_STAMPS="dd.mm.yyyy"
+HIST_STAMPS="yyyy-mm-dd"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
@@ -92,6 +92,7 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
+alias nvim=~/Downloads/nvim.appimage
 
 # User configuration
 
@@ -134,7 +135,7 @@ antigen theme romkatv/powerlevel10k
 # Tell antigen that you're done
 antigen apply
 
-. /opt/asdf-vm/asdf.sh
+# . /opt/asdf-vm/asdf.sh
 autoload -Uz compinit
 compinit
 
